@@ -10,9 +10,9 @@ from .serializers import UserSerializer, PostSerializer, UserSerializerIn
 from .models import Post, User
 
 @csrf_exempt
-def post_list(request):
+def posts(request):
     """
-    List all code snippets, or create a new snippet.
+    List all posts, or create a new post.
     """
     if request.method == 'GET':
         posts = Post.objects.all()
@@ -55,7 +55,7 @@ def post_detail(request, pk):
         return HttpResponse(status=204)
 
 @csrf_exempt
-def user(request, pk):
+def users(request, pk):
     """
     Creates user on POST
     Returns user on GET
@@ -79,7 +79,7 @@ def user(request, pk):
         return JsonResponse(serializer.data)
 
 @csrf_exempt
-def user_like(request, post_key, user_id):
+def user_like(request, post_id, user_id):
 
     """
     Checks if user and post exist, if so adds a like from the user to post
@@ -93,7 +93,7 @@ def user_like(request, post_key, user_id):
             return JsonResponse({"message": "User does not exist"}, status=404)
 
         try:
-            post = Post.objects.get(pk=post_key)
+            post = Post.objects.get(pk=post_id)
         except Post.DoesNotExist:
             return JsonResponse({"message": "Post not found"}, status=404)
 
